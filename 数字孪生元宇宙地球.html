@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>地球</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;     
+      }
+      canvas {
+        display: block;
+        
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const filename = params.get('picName');
+
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setClearColor(0x808080,0);
+      renderer.domElement.style.backgroundColor = 'transparent';
+      renderer.setSize( window.innerWidth, window.innerHeight );
+      
+      document.body.appendChild( renderer.domElement );
+
+      var geometry = new THREE.SphereGeometry( 100, 32, 32 );
+      var textureLoader = new THREE.TextureLoader();     
+      //var texture = textureLoader.load( 'https://cdn.jsdelivr.net/gh/mrdoob/three.js/examples/textures/planets/earth_atmos_2048.jpg' );
+      var texture = textureLoader.load( 'https://fty643737159-1314014379.cos.ap-nanjing.myqcloud.com/所需图片.jpg' );
+      var material = new THREE.MeshBasicMaterial( { map: texture } );
+      var sphere = new THREE.Mesh( geometry, material );
+      scene.add( sphere );
+
+      var textureLoader2 = new THREE.TextureLoader();
+      var backgroundTexture = textureLoader2.load('https://s2.loli.net/2023/04/22/t1VFwjqaEf8U6R5.jpg');
+
+      var backgroundGeometry = new THREE.PlaneGeometry(window.innerWidth, window.innerHeight);
+      var backgroundMaterial = new THREE.MeshBasicMaterial({map: backgroundTexture});
+      var background = new THREE.Mesh(backgroundGeometry, backgroundMaterial);
+      scene.add(background);
+
+      camera.position.z = 300;
+
+      function animate() {
+        requestAnimationFrame( animate );
+        sphere.rotation.y += 0.01;
+        renderer.render( scene, camera );
+      }
+
+      animate();
+    </script>
+    
+  </body>
+</html>
